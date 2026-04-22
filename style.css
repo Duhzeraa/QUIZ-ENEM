@@ -1,0 +1,511 @@
+/* =========================================
+   🎨 VARIÁVEIS E CORES (TEMA CLARO/VERMELHO)
+   ========================================= */
+:root {
+    --bg-dark: #ffffff;     /* Fundo principal */
+    --bg-card: #ffffff;     /* Fundo dos cartões/formulários */
+    --text-main: #7a0909;   /* Texto principal (vermelho escuro) */
+    --primary: #ff0000;     /* Vermelho principal */
+    --accent: #daa820;      /* Vermelho secundário */
+    --danger: #fae105;      /* Vermelho para erros */
+    --shadow-glow: 0 0 12px rgba(255, 0, 0, 0.3); /* Brilho atualizado para vermelho */
+}
+
+/* =========================================
+   ⚙️ RESET E BASE
+   ========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   📐 ESTRUTURA E LAYOUT GERAL
+   ========================================= */
+
+main {
+    max-width: 800px;
+    padding: 1rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-top: 2px solid var(--primary);
+    margin-top: 3rem;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* =========================================
+   🔤 TIPOGRAFIA
+   ========================================= */
+h1 {
+    color: var(--bg-card);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+
+h2, h3 {
+    color: var(--bg-card);
+    font-weight: 600;
+}
+
+h2 { margin-bottom: 1rem; }
+h3 { margin: 1rem 0 1.5rem; font-size: 1.3rem; }
+
+/* =========================================
+   🎛️ NAVEGAÇÃO E TELAS
+   ========================================= */
+nav button {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+nav button:hover {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: var(--shadow-glow);
+}
+
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn 0.4s ease-out; }
+
+/* =========================================
+   📱 LAYOUT APP DASHBOARD (TELA INICIAL)
+   ========================================= */
+
+/* Cabeçalho vermelho curvado */
+.top-header-curved {
+    background-image: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%);
+    padding: 3rem 2rem 6rem; 
+    border-radius: 0 0 40px 40px;
+    text-align: center;
+    position: relative;
+    margin: -1rem -1rem 0; 
+}
+
+/* Círculo do Simulado Geral (Botão Principal) */
+.main-action-circle {
+    width: 170px;
+    height: 170px;
+    background: #ffffff;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.2), 
+                0 0 0 30px rgba(255, 255, 255, 0.1),
+                0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.main-action-circle:hover { transform: scale(1.05); }
+
+.action-title {
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.action-subtitle {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+/* Cartão de Estatísticas Flutuante */
+.stats-card-overlap {
+    background: var(--bg-card);
+    margin: -60px 1rem 2rem; 
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 10; 
+}
+
+.stat-item { display: flex; flex-direction: column; }
+
+.stat-header {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 18px; 
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot.purple { background-color: #9b59b6; }
+.dot.green { background-color: #cc682e; }
+.dot.red { background-color: #e74c3c; }
+
+/* Grade Inferior de Matérias */
+.subjects-grid-app {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem 1rem;
+    padding: 1rem 1rem 3rem;
+}
+
+.icon-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+}
+
+.icon-btn:hover { transform: translateY(-5px); }
+
+.icon-circle {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bg-math { background-image: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%); } 
+.bg-lang { background-image: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%); } 
+.bg-human { background-image: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%); } 
+.bg-nature { background-image: linear-gradient(135deg, var(--primary) 0%, var(--danger) 100%); } 
+
+/* =========================================
+   🔘 BOTÕES GERAIS
+   ========================================= */
+.btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: bold;
+    padding: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    background: var(--accent);
+    box-shadow: var(--shadow-glow);
+}
+
+/* =========================================
+   📝 FORMULÁRIOS E INPUTS
+   ========================================= */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border: 1px solid #e0e0e0; /* Borda mais clara para tema claro */
+}
+
+input, select, textarea {
+    padding: 1rem;
+    background: #f9f9f9; /* Fundo levemente cinza para destacar do card branco */
+    border: 1px solid #ccc;
+    color: var(--text-main); /* Corrigido para aparecer no tema claro */
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+}
+
+textarea { resize: vertical; min-height: 120px; }
+
+/* =========================================
+   🧠 INTERFACE DO QUIZ
+   ========================================= */
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    font-size: 1.1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+}
+
+#progress-fill {
+    height: 100%;
+    background: var(--primary);
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.question-container {
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: 10px;
+    border-left: 5px solid var(--primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+    background: var(--primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 1.2rem;
+    margin-bottom: 0.8rem;
+    background: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    color: var(--text-main);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.option-btn:hover {
+    border-color: var(--primary);
+    background: rgba(255, 0, 0, 0.05); /* Efeito hover em vermelho claro */
+}
+
+.option-btn.correct {
+    background: rgba(57, 223, 35, 0.15); /* Verde para acerto */
+    color: #38af34;
+    border-color: #23bd15;
+    font-weight: bold;
+}
+
+.option-btn.wrong {
+    background: rgba(151, 2, 2, 0.685); /* Vermelho para erro */
+    color: var(--primary);
+    border-color: var(--text-main);
+}
+
+/* =========================================
+   📊 PAINEL DE RESULTADOS
+   ========================================= */
+.score-board {
+    text-align: center;
+    padding: 3rem;
+    margin-bottom: 2rem;
+}
+
+#final-score {
+    font-size: 4.5rem;
+    color: var(--primary);
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    margin-bottom: 0.5rem;
+}
+
+
+/* =========================================
+   ✨ ANIMAÇÕES E KEYFRAMES
+   ========================================= */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* =========================================
+   📥 ÁREA DE IMPORTAÇÃO
+   ========================================= */
+.import-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px dashed #ff0000;
+    background: var(--bg-card);
+}
+
+.import-help {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.import-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+input[type="file"] {
+    background: transparent;
+    border: 1px dashed var(--primary);
+    color: var(--text-main);
+    padding: 0.8rem;
+    cursor: pointer;
+    flex: 1;
+}
+
+input[type="file"]::file-selector-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 1rem;
+    font-weight: bold;
+}
+
+/* =========================================
+   🍔 MENU HAMBÚRGUER E SIDEBAR
+   ========================================= */
+.menu-toggle {
+    font-size: 2.2rem;
+    color: #ffffff;
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    cursor: pointer;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 50;
+    transition: transform 0.2s ease;
+}
+
+.menu-toggle:hover {
+    transform: scale(1.1);
+}
+
+.dark-toggle {
+    position: static;
+    color: var(--primary);
+    text-shadow: none;
+    margin-right: 1rem;
+}
+
+.header-register {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Fundo escuro atrás do menu */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 99;
+    backdrop-filter: blur(3px);
+}
+#overlay.active { display: block; }
+
+/* Barra Lateral */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100%;
+    background: var(--bg-card);
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sidebar.open { left: 0; }
+
+.sidebar .close-btn {
+    align-self: flex-end;
+    font-size: 2.5rem;
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.sidebar .nav-btn {
+    background: transparent;
+    border: 2px solid #e0e0e0;
+    color: var(--text-main);
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar .nav-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(255,0,0,0.05);
+}
