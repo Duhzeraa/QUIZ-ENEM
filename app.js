@@ -1,14 +1,8 @@
 // 🛠️ Módulo de Armazenamento e Dados
 const storage = {
     getQuestions: () => {
-        // 1. Pega as questões extras cadastradas manualmente no navegador (se existirem)
         const questoesLocais = JSON.parse(localStorage.getItem('quiz_questions')) || [];
-        
-        // 2. Pega as questões fixas do arquivo database.js
-        // (Fazemos uma checagem caso você esqueça de criar o arquivo)
         const questoesFixas = typeof bancoDeQuestoes !== 'undefined' ? bancoDeQuestoes : [];
-        
-        // 3. Junta tudo! As fixas + as que o usuário cadastrou na hora
         return [...questoesFixas, ...questoesLocais];
     },
     
@@ -28,14 +22,13 @@ const storage = {
             correct: document.getElementById('q-correct').value
         };
 
-        // NOTA: Salvamos apenas no localStorage. 
-        // As do database.js são fixas e não mudam por aqui.
         const questoesLocais = JSON.parse(localStorage.getItem('quiz_questions')) || [];
         questoesLocais.push(newQuestion);
         localStorage.setItem('quiz_questions', JSON.stringify(questoesLocais));
         
         alert('✅ Questão extra salva com sucesso no navegador!');
         e.target.reset();
+        ui.updateDashboard(); // Atualiza painel após cadastrar
     },
 
     importQuestions: () => {
@@ -58,54 +51,30 @@ const storage = {
                 localStorage.setItem('quiz_questions', JSON.stringify(mergedQuestions));
                 alert(`✅ Sucesso! ${importedData.length} questões extras foram importadas.`);
                 fileInput.value = ''; 
+                ui.updateDashboard(); // Atualiza painel após importar
                 
             } catch (error) {
                 alert('❌ Erro ao ler o arquivo. Certifique-se de que é um JSON válido.');
-            }
-        };
-        reader.readAsText(file);
-    }
-};
-
-    // 📥 NOVA FUNÇÃO: Importar questões via arquivo JSON em lote
-    importQuestions: () => {
-        const fileInput = document.getElementById('file-import');
-        // Prevenção de erro caso o input ainda não exista na tela
-        if (!fileInput) return alert('⚠️ Campo de upload não encontrado.'); 
-        
-        const file = fileInput.files[0];
-
-        if (!file) return alert('⚠️ Por favor, selecione um arquivo .json primeiro!');
-
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            try {
-                const importedData = JSON.parse(e.target.result);
-                
-                if (!Array.isArray(importedData)) {
-                    throw new Error("O arquivo não contém uma lista válida.");
-                }
-
-                // Pega as questões antigas e junta com as novas
-                const currentQuestions = storage.getQuestions();
-                const mergedQuestions = [...currentQuestions, ...importedData];
-
-                // Salva tudo no navegador
-                localStorage.setItem('quiz_questions', JSON.stringify(mergedQuestions));
-                
-                alert(`✅ Sucesso! ${importedData.length} questões foram importadas.`);
-                fileInput.value = ''; // Limpa o campo
-                
-            } catch (error) {
-                alert('❌ Erro ao ler o arquivo. Certifique-se de que é um JSON válido no formato correto.');
                 console.error(error);
             }
         };
-
         reader.readAsText(file);
+    },
+
+    // 📤 NOVA FUNÇÃO: Exportar Backup
+    exportQuestions: () => {
+        const questions = JSON.parse(localStorage.getItem('quiz_questions')) || [];
+        if (questions.length === 0) return alert("Nenhuma questão nova para exportar!");
+
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(questions, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "novas_questoes.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
     }
-;
+};
 
 // 🎨 Módulo de Interface
 const ui = {
@@ -131,6 +100,24 @@ const ui = {
             btn.onclick = () => quiz.handleAnswer(btn, key, q.correct);
             container.appendChild(btn);
         });
+    },
+
+    // 📊 NOVA FUNÇÃO: Atualizar Painel Global
+    updateDashboard: () => {
+        const allQuestions = storage.getQuestions();
+        const history = JSON.parse(localStorage.getItem('quiz_history')) || { acertos: 0, erros: 0 };
+
+        const totalRespondidas = history.acertos + history.erros;
+        let conclusao = allQuestions.length > 0 ? Math.round((totalRespondidas / allQuestions.length) * 100) : 0;
+        if (conclusao > 100) conclusao = 100;
+
+        // Evita erros caso a interface do dashboard não esteja renderizada
+        if(document.getElementById('dash-conclusao')) {
+            document.getElementById('dash-conclusao').innerText = conclusao;
+            document.getElementById('dash-totais').innerText = allQuestions.length;
+            document.getElementById('dash-acertos').innerText = history.acertos;
+            document.getElementById('dash-erros').innerText = history.erros;
+        }
     }
 };
 
@@ -148,13 +135,11 @@ const quiz = {
         if (all.length === 0) return alert('⚠️ Nenhuma questão cadastrada! Vá em "Cadastrar".');
 
         if (mode === 'geral') {
-            // Pega até 10 de cada matéria e embaralha
             const subjects = ['Linguagens', 'Humanas', 'Natureza', 'Matemática'];
             quiz.currentQuestions = subjects.flatMap(sub => 
                 all.filter(q => q.subject === sub).sort(() => 0.5 - Math.random()).slice(0, 10)
             ).sort(() => 0.5 - Math.random());
         } else {
-            // Pega até 40 da matéria específica
             quiz.currentQuestions = all.filter(q => q.subject === mode)
                                        .sort(() => 0.5 - Math.random()).slice(0, 40);
         }
@@ -171,7 +156,6 @@ const quiz = {
     },
 
     handleAnswer: (btn, selected, correct) => {
-        // Trava os botões
         const buttons = document.querySelectorAll('.option-btn');
         buttons.forEach(b => b.onclick = null);
 
@@ -184,7 +168,6 @@ const quiz = {
             quiz.stats[currentQ.subject].c++;
         } else {
             btn.classList.add('wrong');
-            // Destaca a correta
             Array.from(buttons).find(b => b.innerText.startsWith(correct)).classList.add('correct');
         }
 
@@ -195,7 +178,7 @@ const quiz = {
             } else {
                 quiz.finish();
             }
-        }, 1500); // 1.5s de feedback visual antes de avançar
+        }, 1500); 
     },
 
     startTimer: () => {
@@ -221,7 +204,6 @@ const quiz = {
         document.getElementById('final-score').innerText = `${percent}%`;
         document.getElementById('score-details').innerText = `${quiz.score} acertos de ${total} questões`;
 
-        // Renderiza estatísticas por matéria
         let statsHTML = '<h3>Desempenho por Área:</h3>';
         Object.entries(quiz.stats).forEach(([sub, data]) => {
             if (data.t > 0) {
@@ -230,5 +212,17 @@ const quiz = {
             }
         });
         document.getElementById('subject-breakdown').innerHTML = statsHTML;
+
+        // 💾 Salva no histórico global
+        const history = JSON.parse(localStorage.getItem('quiz_history')) || { acertos: 0, erros: 0 };
+        history.acertos += quiz.score;
+        history.erros += (total - quiz.score);
+        localStorage.setItem('quiz_history', JSON.stringify(history));
+        
+        // Atualiza o painel
+        ui.updateDashboard();
     }
 };
+
+// 🚀 Inicia o dashboard assim que o app carrega
+ui.updateDashboard();
