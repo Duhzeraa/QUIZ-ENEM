@@ -25,6 +25,20 @@ const bancoDeQuestoes = [
             E: "Cu"
         },
         correct: "C"
+    },
+    {   
+        id: 1003,
+        subject: "Humanas",
+        text: "Quem foi o primeiro presidente do Brasil?",
+        options: {
+            A: "Deodoro da Fonseca",
+            B: "Floriano Peixoto",
+            C: "Prudente de Morais",
+            D: "Nilo Peçanha",
+            E: "Washington Luís"
+        },
+        correct: "A"
+
     }
     // Para adicionar mais, basta colocar uma vírgula após a chave } e colar a próxima!
 ];
