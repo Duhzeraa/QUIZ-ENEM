@@ -137,11 +137,12 @@ const quiz = {
         if (mode === 'geral') {
             const subjects = ['Linguagens', 'Humanas', 'Natureza', 'Matemática'];
             quiz.currentQuestions = subjects.flatMap(sub => 
-                all.filter(q => q.subject === sub).sort(() => 0.5 - Math.random()).slice(0, 10)
-            ).sort(() => 0.5 - Math.random());
+                all.filter(q => q.subject === sub).sort(() => Math.random() - 0.5).slice(0, 10)
+            ).sort(() => Math.random() - 0.5);
         } else {
             quiz.currentQuestions = all.filter(q => q.subject === mode)
-                                       .sort(() => 0.5 - Math.random()).slice(0, 40);
+                                       .sort(() => Math.random() - 0.5)
+                                       .slice(0, 15);
         }
 
         if (quiz.currentQuestions.length === 0) return alert(`⚠️ Nenhuma questão encontrada para ${mode}.`);
