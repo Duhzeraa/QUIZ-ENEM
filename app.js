@@ -2,7 +2,7 @@
 const storage = {
     getQuestions: () => {
         const questoesLocais = JSON.parse(localStorage.getItem('quiz_questions')) || [];
-        const questoesFixas = typeof bancoDeQuestoes !== 'undefined' ? bancoDeQuestoes : [];
+        const questoesFixas = window.bancoDeQuestoes || [];
         return [...questoesFixas, ...questoesLocais];
     },
     
@@ -135,7 +135,7 @@ const quiz = {
         if (all.length === 0) return alert('⚠️ Nenhuma questão cadastrada! Vá em "Cadastrar".');
 
         if (mode === 'geral') {
-            const subjects = ['Linguagens', 'Humanas', 'Natureza', 'Matemática'];
+            const subjects = ['Linguagens', 'Humanas', 'Natureza', 'Matematica'];
             quiz.currentQuestions = subjects.flatMap(sub => 
                 all.filter(q => q.subject === sub).sort(() => Math.random() - 0.5).slice(0, 10)
             ).sort(() => Math.random() - 0.5);
@@ -149,7 +149,7 @@ const quiz = {
 
         quiz.currentIndex = 0;
         quiz.score = 0;
-        quiz.stats = { Linguagens: {c:0, t:0}, Humanas: {c:0, t:0}, Natureza: {c:0, t:0}, Matemática: {c:0, t:0} };
+        quiz.stats = { Linguagens: {c:0, t:0}, Humanas: {c:0, t:0}, Natureza: {c:0, t:0}, Matematica: {c:0, t:0} };
         
         ui.showScreen('quiz-area');
         quiz.startTimer();
